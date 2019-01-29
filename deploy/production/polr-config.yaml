@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: polr-config
+data:
+  APP_NAME: fellow.link
+  APP_PROTOCOL: https://
+  APP_ADDRESS: fellow.link
+  DB_CONNECTION: mysql
+  DB_HOST: apps.cenenhudtmur.ca-central-1.rds.amazonaws.com
+  DB_PORT: 3306
+  DB_DATABASE: polr_production
+  DB_USERNAME: polr

@@ -1,0 +1,62 @@
+---
+apiVersion: extensions/v1beta1
+kind: Ingress
+metadata:
+  name: polr-ingress
+  annotations:
+    certmanager.k8s.io/cluster-issuer: letsencrypt-production
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  labels:
+    app: nginx-ingress
+spec:
+  rules:
+  - host: fellow.link
+    http:
+      paths:
+      - backend:
+          serviceName: polr-web
+          servicePort: 9000
+        path: /
+  tls:
+  - hosts:
+    - fellow.link
+    secretName: fellow-link-corp-tls
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: polr-web
+spec:
+  selector:
+    app: polr
+    tier: web
+  ports:
+    - name: web
+      protocol: TCP
+      port: 9000
+      targetPort: web
+---
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: polr-web
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: polr
+        tier: web
+    spec:
+      restartPolicy: Always
+      containers:
+      - name: web
+        image: <%= container_registry %>/polr:<%= current_sha %>
+        ports:
+        - name: web
+          containerPort: 9000
+        envFrom:
+          - configMapRef:
+              name: polr-config
+          - secretRef:
+              name: polr-secrets
