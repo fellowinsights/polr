@@ -178,5 +178,5 @@ if ($adminCount < 1) {
 $mysql->close();
 EOPHP
 
-
+chown www-data:www-data /var/www/html/storage/logs/lumen.log
 exec "$@"

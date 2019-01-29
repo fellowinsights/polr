@@ -15,7 +15,7 @@ spec:
       paths:
       - backend:
           serviceName: polr-web
-          servicePort: 9000
+          servicePort: 80
         path: /
   tls:
   - hosts:
@@ -31,9 +31,9 @@ spec:
     app: polr
     tier: web
   ports:
-    - name: web
+    - name: nginx
       protocol: TCP
-      port: 9000
+      port: 80
       targetPort: web
 ---
 apiVersion: extensions/v1beta1
@@ -50,13 +50,39 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-      - name: web
+      - name: polr-php-fpm
         image: <%= container_registry %>/polr:<%= current_sha %>
+        command: ['/usr/local/bin/docker-entrypoint.sh', '/usr/local/sbin/php-fpm']
+        ports:
+        - name: fastcgi
+          containerPort: 9000
+        env:
+          - name: 'DEPLOY_TAG'
+            value: '1'
+        envFrom:
+        - configMapRef:
+            name: polr-config
+        - secretRef:
+            name: polr-secrets
+        volumeMounts:
+        - mountPath: /var/www/html
+          name: www-data
+      - name: nginx
+        image: nginx:alpine
         ports:
         - name: web
-          containerPort: 9000
-        envFrom:
-          - configMapRef:
-              name: polr-config
-          - secretRef:
-              name: polr-secrets
+          containerPort: 80
+        volumeMounts:
+        - mountPath: /etc/nginx/nginx.conf
+          readOnly: true
+          name: nginx-config
+          subPath: nginx.conf
+        - mountPath: /var/www/html
+          readOnly: true
+          name: www-data
+      volumes:
+      - name: nginx-config
+        configMap:
+          name: nginx-config
+      - name: www-data
+        emptyDir: {}
