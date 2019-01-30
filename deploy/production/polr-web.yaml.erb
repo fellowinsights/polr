@@ -41,7 +41,7 @@ kind: Deployment
 metadata:
   name: polr-web
 spec:
-  replicas: 2
+  replicas: 1  # polr only supports file based sessions and cookies, so pods don't share state, forgive me
   template:
     metadata:
       labels:
@@ -58,7 +58,7 @@ spec:
           containerPort: 9000
         env:
           - name: 'DEPLOY_TAG'
-            value: '1'
+            value: '3'
         envFrom:
         - configMapRef:
             name: polr-config
