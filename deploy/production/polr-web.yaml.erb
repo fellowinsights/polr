@@ -8,6 +8,7 @@ metadata:
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   labels:
     app: nginx-ingress
+    kubernetes-deploy: managed
 spec:
   rules:
   - host: fellow.link
@@ -26,6 +27,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: polr-web
+  labels:
+    kubernetes-deploy: managed
 spec:
   selector:
     app: polr
@@ -40,6 +43,8 @@ apiVersion: extensions/v1beta1
 kind: Deployment
 metadata:
   name: polr-web
+  labels:
+    kubernetes-deploy: managed
 spec:
   replicas: 1  # polr only supports file based sessions and cookies, so pods don't share state, forgive me
   template:
@@ -47,6 +52,7 @@ spec:
       labels:
         app: polr
         tier: web
+        kubernetes-deploy: managed
     spec:
       restartPolicy: Always
       containers:

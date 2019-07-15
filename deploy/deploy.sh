@@ -16,4 +16,5 @@ export REVISION=$IMAGE
 kubernetes-deploy \
   --template-dir ./deploy/production \
   --bindings=container_registry=326253947186.dkr.ecr.us-west-2.amazonaws.com \
+  --selector="kubernetes-deploy=managed" \
   polr-production $KUBECONTEXT
