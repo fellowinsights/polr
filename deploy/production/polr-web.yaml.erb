@@ -4,7 +4,8 @@ kind: Ingress
 metadata:
   name: polr-ingress
   annotations:
-    certmanager.k8s.io/cluster-issuer: letsencrypt-production
+    certmanager.k8s.io/cluster-issuer: letsencrypt-production  # remove when cert-manager is upgraded
+    cert-manager.io/cluster-issuer: letsencrypt-production
     nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
   labels:
     app: nginx-ingress
