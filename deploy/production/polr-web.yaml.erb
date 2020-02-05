@@ -40,7 +40,7 @@ spec:
       port: 80
       targetPort: web
 ---
-apiVersion: extensions/v1beta1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: polr-web
@@ -48,6 +48,10 @@ metadata:
     kubernetes-deploy: managed
 spec:
   replicas: 1  # polr only supports file based sessions and cookies, so pods don't share state, forgive me
+  selector:
+    matchLabels:
+      app: polr
+      tier: web
   template:
     metadata:
       labels:
