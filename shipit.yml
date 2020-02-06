@@ -10,7 +10,7 @@ ci:
 
 deploy:
   pre:
-    - /app/bin/configure-shipit-kubectl  # from shipit
+    - /app/bin/configure-shipit-kubectl # from shipit
 
   override:
     - |
@@ -22,5 +22,5 @@ tasks:
     action: "Restart polr"
     description: "Restarts all the k8s pods for polr"
     steps:
-      - /app/bin/configure-shipit-kubectl  # from shipit
-      - kubernetes-restart polr $KUBECONTEXT --deployments=polr-web
+      - /app/bin/configure-shipit-kubectl # from shipit
+      - krane restart polr $KUBECONTEXT --deployments=polr-web
