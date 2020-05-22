@@ -20,7 +20,7 @@ data:
   MAIL_USERNAME: apikey
   MAIL_FROM_ADDRESS: link-shortener@fellow.co
   MAIL_FROM_NAME: Fellow Link Shortener
-  POLR_ALLOW_ACCT_CREATION: 'true'
+  POLR_ALLOW_ACCT_CREATION: 'false'
   POLR_ACCT_ACTIVATION: 'true'
   SETTING_PSEUDORANDOM_ENDING: 'true'
   SETTING_SHORTEN_PERMISSION: 'true'
